@@ -1,3 +1,7 @@
+# Requirements
+1. torch
+2. transformers 4.39.0
+
 ## 1. Extract attribute words relating to demograhic axis
 - Args: <br/>
 -parser.add_argument("-d", "--data_src", help="model type")
