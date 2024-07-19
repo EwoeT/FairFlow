@@ -40,8 +40,8 @@ hidden_dim = 100
 
 train_diin.train_model(attribute_list1, attribute_list2, n_factors, in_channel, n_flow, hidden_depth, hidden_dim, rho, batch_size, chunk_size)
 
-get_inverted_samples = invert.invert(model_name)
+get_inverted_samples = invert.invert(model_name, attribute_list1, attribute_list2)
 
-get_inverted_samples.get_instances_a(attribute_list1, attribute_list2, chunk_size)
+get_inverted_samples.get_instances_a(chunk_size)
 
-get_inverted_samples.get_instances_b(attribute_list1, attribute_list2, chunk_size)
+get_inverted_samples.get_instances_b(chunk_size)

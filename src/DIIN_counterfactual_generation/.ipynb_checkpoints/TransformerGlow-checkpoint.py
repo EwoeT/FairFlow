@@ -1,4 +1,4 @@
-#Code is sourced from https://github.com/UKPLab/pytorch-bertflow/blob/master/tflow_utils.py
+# sourced from https://github.com/UKPLab/pytorch-bertflow/blob/master/tflow_utils.py
 
 import torch
 from typing import Callable, Iterable, Tuple

@@ -24,52 +24,18 @@ else:
 
 
 class invert:
-    def __init__(self, model_name):
-        # self.model_name
+    def __init__(self, model_name, attribute1_list, attribute2_list):
+        self.model_name = model_name
         self.tokenizer = BertTokenizer.from_pretrained(model_name)
         self.vocabs = self.tokenizer.get_vocab()
+        self.attribute_list1 = attribute1_list
+        self.attribute_list2 = attribute2_list
         self.vv = dict((v,k) for k,v in self.vocabs.items())
+        self.attribute_pair = f"{attribute1_list[0]}_{attribute2_list[0]}"
         self.embedding_decoder = BertForMaskedLM.from_pretrained(model_name).cls.cuda()
-    
-    # def get_examples1(self, embeddings, gen_labels, attribute_ids, rand_seed=2, train=True):
-    #     random.seed(rand_seed)
-    #     female_embeddings = []
-    #     male_embeddings = []
-    #     female_gen_labels = []
-    #     male_gen_labels = []
-    #     female_attribute_ids = []
-    #     male_attribute_ids = []
-    #     female_logits = []
-    #     male_logits = []
-    
-    #     # print(len(gen_labels))
-    #     for key,i in enumerate(gen_labels):
-    #         # print(i)
-    #         if i==0:
-    #             female_embeddings.append(embeddings[key])
-    #             female_gen_labels.append(i)
-    #             female_attribute_ids.append(attribute_ids[key])
-    #             # female_logits.append(logits[key])
-    #             # print(key)
-    #         else:
-    #             male_embeddings.append(embeddings[key])
-    #             # print(embeddings[key])
-    #             male_gen_labels.append(i)
-    #             male_attribute_ids.append(attribute_ids[key])
-    #             # male_logits.append(logits[key])
-    
-    #     female_embeddings = torch.tensor(np.array(female_embeddings))
-    #     female_attribute_ids = torch.tensor(np.array(female_attribute_ids))
-    #     female_gen_labels = torch.tensor(np.array(female_gen_labels))
-    #     # female_logits = torch.tensor(np.array(female_logits))
-        
-    #     male_embeddings = torch.tensor(np.array(male_embeddings))
-    #     male_attribute_ids = torch.tensor(np.array(male_attribute_ids))
-    #     male_gen_labels = torch.tensor(np.array(male_gen_labels))
-    #     # male_logits = torch.tensor(np.array(male_logits))
-        
-    #     return female_embeddings, female_attribute_ids, female_gen_labels, male_embeddings, male_attribute_ids, male_gen_labels
-    
+        self.attribute_pair = f"{self.attribute_list1[0]}_{self.attribute_list2[0]}"
+        self.model_path = "outputs/bertflow_model_"+self.attribute_pair
+        self.bertflow = torch.load(f"{self.model_path}/bertflow.pth")
     
     
     def get_examples(self, embeddings, gen_labels, attribute_ids, logits, rand_seed, train=True):
@@ -141,17 +107,6 @@ class invert:
         # For each batch of training data...
         bertflow.eval()
         with torch.no_grad():
-            # for step, f_batch in enumerate(female_dataloader):
-            #     # print(f_batch.shape)
-            #     embs = f_batch[0]
-            #     ids = f_batch[1]
-            #     logit_v = f_batch[3]
-            #     # print(embs.shape)
-            #     female_z = bertflow(embs.to(device), return_loss=False)  # Here z is the sentence embedding
-            #     female_z_list.append(female_z)
-            #     f_embs.append(embs)
-            #     f_ids.append(ids)
-            #     f_logits.append(logit_v)
             for step, m_batch in enumerate(male_dataloader):
                 embs = m_batch[0]
                 ids = m_batch[1]
@@ -276,16 +231,7 @@ class invert:
     
     
     
-    
-    
-    
-    
-    
-    
-    def get_instances_a(self, attribute1_list, attribute2_list, chunk_size):
-        attribute_pair = f"{attribute1_list[0]}_{attribute2_list[0]}"
-        model_path = "outputs/bertflow_model_"+attribute_pair
-        bertflow = torch.load(f"{model_path}/bertflow.pth")
+    def get_instances_a(self, chunk_size):
         original_old_word = []
         old_word = []
         old_id = []
@@ -298,13 +244,13 @@ class invert:
         for jj in range(1,2):
             for iteration in range(chunk_size,chunk_size+1,chunk_size+1):
                 print(iteration)
-                with open('outputs/attribute_embeddings_'+attribute_pair+'/embeddings_'+str(iteration)+'.pkl', 'rb') as f:
+                with open('outputs/attribute_embeddings_'+self.attribute_pair+'/embeddings_'+str(iteration)+'.pkl', 'rb') as f:
                     embeddings = pickle.load(f)
-                with open('outputs/attribute_embeddings_'+attribute_pair+'/gender_'+str(iteration)+'.pkl', 'rb') as f:
+                with open('outputs/attribute_embeddings_'+self.attribute_pair+'/gender_'+str(iteration)+'.pkl', 'rb') as f:
                         gen_labels = pickle.load(f)
-                with open('outputs/attribute_embeddings_'+attribute_pair+'/token_ids_'+str(iteration)+'.pkl', 'rb') as f:
+                with open('outputs/attribute_embeddings_'+self.attribute_pair+'/token_ids_'+str(iteration)+'.pkl', 'rb') as f:
                         attribute_ids = pickle.load(f)
-                with open('outputs/attribute_embeddings_'+attribute_pair+'/logits_'+str(iteration)+'.pkl', 'rb') as f:
+                with open('outputs/attribute_embeddings_'+self.attribute_pair+'/logits_'+str(iteration)+'.pkl', 'rb') as f:
                         logits = pickle.load(f)
         
             
@@ -334,8 +280,8 @@ class invert:
                     start_ind += ratio
                     # try:
                     # print((female_embeddings.shape), (male_embeddings.shape))
-                    avg_sum_fem = self.gen_flow_embs1_a(male_dataloader, bertflow)
-                    original_old_word_temp, old_word_temp, old_id_temp, new_word_temp, new_id_temp, gender_temp, logit_vals_temp = self.gen_flow_embs_a(female_dataloader, male_dataloader, avg_sum_fem, bertflow)
+                    avg_sum_fem = self.gen_flow_embs1_a(male_dataloader, self.bertflow)
+                    original_old_word_temp, old_word_temp, old_id_temp, new_word_temp, new_id_temp, gender_temp, logit_vals_temp = self.gen_flow_embs_a(female_dataloader, male_dataloader, avg_sum_fem, self.bertflow)
                     original_old_word+= original_old_word_temp
                     old_word+= old_word_temp
                     old_id+= old_id_temp
@@ -365,10 +311,7 @@ class invert:
         df = df[~filter]
         
         
-        df.to_csv('outputs/female_male_full_pairs_'+attribute_pair+'.csv', index=False)
-
-
-
+        df.to_csv('outputs/female_male_full_pairs_'+self.attribute_pair+'.csv', index=False)
 
 
 
@@ -520,17 +463,8 @@ class invert:
         return original_old_word, old_word, old_id, new_word, new_id, gender, logit_vals
     
     
-    
-    
-    
-    
-    
-    
-    
-    def get_instances_b(self, attribute1_list, attribute2_list, chunk_size):
-        attribute_pair = f"{attribute1_list[0]}_{attribute2_list[0]}"
-        model_path = "outputs/bertflow_model_"+attribute_pair
-        bertflow = torch.load(f"{model_path}/bertflow.pth")
+        
+    def get_instances_b(self, chunk_size):
         original_old_word = []
         old_word = []
         old_id = []
@@ -543,20 +477,13 @@ class invert:
         for jj in range(1,2):
             for iteration in range(chunk_size, chunk_size+1, chunk_size+1):
                 print(iteration)
-            
-                # with open('../1_viz/attribute_embeddings/embeddings_1000.pkl', 'rb') as f:
-                #     embeddings = pickle.load(f)
-                # with open('../1_viz/attribute_embeddings/gender_1000.pkl', 'rb') as f:
-                #     gen_labels = pickle.load(f)
-                # with open('../1_viz/attribute_embeddings/token_ids_1000.pkl', 'rb') as f:
-                #     attribute_ids = pickle.load(f)
-                with open('outputs/attribute_embeddings_'+attribute_pair+'/embeddings_'+str(iteration)+'.pkl', 'rb') as f:
+                with open('outputs/attribute_embeddings_'+self.attribute_pair+'/embeddings_'+str(iteration)+'.pkl', 'rb') as f:
                     embeddings = pickle.load(f)
-                with open('outputs/attribute_embeddings_'+attribute_pair+'/gender_'+str(iteration)+'.pkl', 'rb') as f:
+                with open('outputs/attribute_embeddings_'+self.attribute_pair+'/gender_'+str(iteration)+'.pkl', 'rb') as f:
                         gen_labels = pickle.load(f)
-                with open('outputs/attribute_embeddings_'+attribute_pair+'/token_ids_'+str(iteration)+'.pkl', 'rb') as f:
+                with open('outputs/attribute_embeddings_'+self.attribute_pair+'/token_ids_'+str(iteration)+'.pkl', 'rb') as f:
                         attribute_ids = pickle.load(f)
-                with open('outputs/attribute_embeddings_'+attribute_pair+'/logits_'+str(iteration)+'.pkl', 'rb') as f:
+                with open('outputs/attribute_embeddings_'+self.attribute_pair+'/logits_'+str(iteration)+'.pkl', 'rb') as f:
                         logits = pickle.load(f)
         
             
@@ -586,8 +513,8 @@ class invert:
                     start_ind += ratio
                     # try:
                     # print((female_embeddings.shape), (male_embeddings.shape))
-                    avg_sum_fem = self.gen_flow_embs1_b(female_dataloader, bertflow)
-                    original_old_word_temp, old_word_temp, old_id_temp, new_word_temp, new_id_temp, gender_temp, logit_vals_temp = self.gen_flow_embs_b(female_dataloader, male_dataloader, avg_sum_fem, bertflow)
+                    avg_sum_fem = self.gen_flow_embs1_b(female_dataloader, self.bertflow)
+                    original_old_word_temp, old_word_temp, old_id_temp, new_word_temp, new_id_temp, gender_temp, logit_vals_temp = self.gen_flow_embs_b(female_dataloader, male_dataloader, avg_sum_fem, self.bertflow)
                     original_old_word+= original_old_word_temp
                     old_word+= old_word_temp
                     old_id+= old_id_temp
@@ -596,8 +523,7 @@ class invert:
                     gender+= gender_temp
                     logit_vals+= logit_vals_temp
 
-            
-        
+                  
         
         dict = {'original_old_word': original_old_word, 'old_word': old_word, 'old_id': old_id, 'new_word': new_word, 'new_id': new_id, 'gender': gender, 'logits': logit_vals}
         df = pd.DataFrame(dict)
@@ -615,4 +541,4 @@ class invert:
         df = df[~filter]
         
         
-        df.to_csv('outputs/male_female_full_pairs_'+attribute_pair+'.csv', index=False)
+        df.to_csv('outputs/male_female_full_pairs_'+self.attribute_pair+'.csv', index=False)

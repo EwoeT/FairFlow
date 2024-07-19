@@ -24,18 +24,6 @@ else:
   print('No GPU available, using the CPU instead.')
   device = torch.device("cpu")
 
-# with open('../../DIIN/data/intrinsic_word_level_data/enwiki-20230320-pages-articles4.txt') as file:
-#     lines = [line.rstrip() for line in file]
-# attribute_df = pd.DataFrame(lines)[0]
-# attribute_df.reset_index(drop=True)
-# attribute_df
-
-
-# attribute_1 = "catholic"
-# female_attribute_list = [attribute_1]
-
-# attribute_2 = "muslim"
-# male_attribute_list = [attribute_2]
 
 class tokenizer_config:
     def __init__(self, model_name):
