@@ -5,14 +5,14 @@
 ## 1. Extract attribute words relating to demograhic axis
 - Args: <br/>
 -parser.add_argument("-d", "--data_src", help="model type")
--parser.add_argument("-m", "--model_name", default='bert-base-uncased', help="model type")
--parser.add_argument("-x", "--attribute_list1", nargs="+", help="first attribute")
--parser.add_argument("-y", "--attribute_list2",nargs="+", help="second attribute")
--parser.add_argument("-l", "--seq_len", default=150, type=int, help="maximum text sequence length")
--parser.add_argument("-t", "--threshold", default=3, type=int, help="threshold for attribute extraction")
--parser.add_argument("-b", "--batch_size", default=32, type=int, help="batch size")
--parser.add_argument("-c", "--chunk_size", default=50000, type=int, help="chunk size")
--parser.add_argument("-e", "--epochs", default=4, type=int, help="number of epochs to train attribute classifier")
+-parser.add_argument("-m", "--model_name", default='bert-base-uncased', help="model type") <br/>
+-parser.add_argument("-x", "--attribute_list1", nargs="+", help="first attribute") <br/>
+-parser.add_argument("-y", "--attribute_list2",nargs="+", help="second attribute") <br/>
+-parser.add_argument("-l", "--seq_len", default=150, type=int, help="maximum text sequence length") <br/>
+-parser.add_argument("-t", "--threshold", default=3, type=int, help="threshold for attribute extraction") <br/>
+-parser.add_argument("-b", "--batch_size", default=32, type=int, help="batch size") <br/>
+-parser.add_argument("-c", "--chunk_size", default=50000, type=int, help="chunk size") <br/>
+-parser.add_argument("-e", "--epochs", default=4, type=int, help="number of epochs to train attribute classifier") <br/>
 
 - Example:
 ```
@@ -22,13 +22,13 @@
 
 ## 2. Extract attribute words relating to demograhic axis
 - Args: <br/>
--parser.add_argument("-m", "--model_name", default='bert-base-uncased', help="model type")
--parser.add_argument("-x", "--attribute_list1", nargs="+", help="first attribute")
--parser.add_argument("-y", "--attribute_list2",nargs="+", help="second attribute")
--parser.add_argument("-n", "--n_factors", default=10, type=int, help="number of factors for invertible flow network")
--parser.add_argument("-r", "--rho", default=0.98, type=float, help="correlation factor (how similar embeddings of embedding pairs should be in the common dimensions)")
--parser.add_argument("-b", "--batch_size", default=32, type=int, help="batch size")
--parser.add_argument("-c", "--chunk_size", default=30000, type=int, help="chunk size")
+-parser.add_argument("-m", "--model_name", default='bert-base-uncased', help="model type") <br/>
+-parser.add_argument("-x", "--attribute_list1", nargs="+", help="first attribute") <br/>
+-parser.add_argument("-y", "--attribute_list2",nargs="+", help="second attribute") <br/>
+-parser.add_argument("-n", "--n_factors", default=10, type=int, help="number of factors for invertible flow network") <br/>
+-parser.add_argument("-r", "--rho", default=0.98, type=float, help="correlation factor (how similar embeddings of embedding pairs should be in the common dimensions)") <br/>
+-parser.add_argument("-b", "--batch_size", default=32, type=int, help="batch size") <br/>
+-parser.add_argument("-c", "--chunk_size", default=30000, type=int, help="chunk size") <br/>
 
 - Example:
 ```
