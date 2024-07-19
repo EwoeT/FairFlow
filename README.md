@@ -1,4 +1,4 @@
-## 2. Extract attribute words relating to demograhic axis
+## 1. Extract attribute words relating to demograhic axis
 - Args: <br/>
 -parser.add_argument("-d", "--data_src", help="model type")
 -parser.add_argument("-m", "--model_name", default='bert-base-uncased', help="model type")
