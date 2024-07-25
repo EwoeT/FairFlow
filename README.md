@@ -8,7 +8,7 @@
 !python src/attribute_extraction/viz.py -d '../../DIIN/data/intrinsic_word_level_data/enwiki-20230320-pages-articles4.txt' -m 'bert-base-uncased' -x "she" -y "he" -l 150 -t 5 -b 32 -c 30000
 ```
 <br/>
-- Args: <br/>
+Args: <br/>
 -parser.add_argument("-d", "--data_src", help="model type")
 -parser.add_argument("-m", "--model_name", default='bert-base-uncased', help="model type") <br/>
 -parser.add_argument("-x", "--attribute_list1", nargs="+", help="first attribute") <br/>
@@ -27,7 +27,7 @@
 !python src/DIIN_counterfactual_generation/DIIN_generate_counterfactuals.py -m 'bert-base-uncased' -x "she" -y "he" -n 10 -r 0.98 -c 30000
 ```
 <br/>
-- Args: <br/>
+Args: <br/>
 -parser.add_argument("-m", "--model_name", default='bert-base-uncased', help="model type") <br/>
 -parser.add_argument("-x", "--attribute_list1", nargs="+", help="first attribute") <br/>
 -parser.add_argument("-y", "--attribute_list2",nargs="+", help="second attribute") <br/>
@@ -45,7 +45,7 @@
 !python src/error_correction/mbcda.py -m "facebook/bart-base" -d "input_text.txt" -s 0.9 -c "cuda" -mode "train" -l 50 -b 2
 ```
 <br/>
-- Args: <br/>
+Args: <br/>
 -parser.add_argument("-m", "--model_name", default="facebook/bart-base", help="generative model type") <br/>
 -parser.add_argument("-d", "--data_path", default="", help="path to training file - csv") <br/>
 -parser.add_argument("-s", "--train_split_ratio", default=0.9, type=float, help="train-test split ratio") <br/>
