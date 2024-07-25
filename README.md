@@ -34,3 +34,19 @@
 ```
 !python src/DIIN_counterfactual_generation/DIIN_generate_counterfactuals.py -m 'bert-base-uncased' -x "she" -y "he" -n 10 -r 0.98 -c 30000
 ```
+
+
+## 3. Error correction
+- Args: <br/>
+-parser.add_argument("-m", "--model_name", default="facebook/bart-base", help="generative model type") <br/>
+-parser.add_argument("-d", "--data_path", default="", help="path to training file - csv") <br/>
+-parser.add_argument("-s", "--train_split_ratio", default=0.9, type=float, help="train-test split ratio") <br/>
+-parser.add_argument("-b", "--num_beams", default=2, type=int, help="number of beams for beam search") <br/>
+-parser.add_argument("-mode", "--mode", default="train", help="train or generate") <br/>
+-parser.add_argument("-c", "--device", default="cuda", help="cpu or cuda") <br/>
+-parser.add_argument("-l", "--max_length", default=200, type=int, help="maximum sentence length") <br/>
+
+- Example:
+```
+!python src/error_correction/mbcda.py -m "facebook/bart-base" -d "input_text.txt" -s 0.9 -c "cuda" -mode "train" -l 50 -b 2
+```
