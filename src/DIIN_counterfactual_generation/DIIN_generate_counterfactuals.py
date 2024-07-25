@@ -1,6 +1,7 @@
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import TrainDIIN
 import invert
+import counterfactual_pairs
 
 # Parse command line arguments
 parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
@@ -36,12 +37,16 @@ hidden_dim = 100
 
 
 
-# chunk_size = 30000
+# # chunk_size = 30000
 
-train_diin.train_model(attribute_list1, attribute_list2, n_factors, in_channel, n_flow, hidden_depth, hidden_dim, rho, batch_size, chunk_size)
+# train_diin.train_model(attribute_list1, attribute_list2, n_factors, in_channel, n_flow, hidden_depth, hidden_dim, rho, batch_size, chunk_size)
 
 get_inverted_samples = invert.invert(model_name, attribute_list1, attribute_list2)
 
-get_inverted_samples.get_instances_a(chunk_size)
+df1 = get_inverted_samples.get_instances_a(chunk_size)
 
-get_inverted_samples.get_instances_b(chunk_size)
+df2 = get_inverted_samples.get_instances_b(chunk_size)
+
+
+gen_counterfactual_pairs = counterfactual_pairs.gen_counterfactual_pairs()
+gen_counterfactual_pairs.output_counterfactual_pairs(df1, df2)

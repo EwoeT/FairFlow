@@ -310,8 +310,8 @@ class invert:
         filter = df['original_old_word'].str.contains("[PAD]")
         df = df[~filter]
         
-        
-        df.to_csv('outputs/female_male_full_pairs_'+self.attribute_pair+'.csv', index=False)
+        return df
+        # df.to_csv('outputs/attribute1_full_pairs_'+self.attribute_pair+'.csv', index=False)
 
 
 
@@ -540,5 +540,5 @@ class invert:
         filter = df['original_old_word'].str.contains("[PAD]")
         df = df[~filter]
         
-        
-        df.to_csv('outputs/male_female_full_pairs_'+self.attribute_pair+'.csv', index=False)
+        return df
+        # df.to_csv('outputs/attribute2_full_pairs_'+self.attribute_pair+'.csv', index=False)

@@ -13,7 +13,7 @@ parser.add_argument("-m", "--model_name", default='bert-base-uncased', help="mod
 parser.add_argument("-x", "--attribute_list1", nargs="+", help="first attribute")
 parser.add_argument("-y", "--attribute_list2",nargs="+", help="second attribute")
 parser.add_argument("-l", "--seq_len", default=150, type=int, help="maximum text sequence length")
-parser.add_argument("-t", "--threshold", default=3, type=int, help="threshold for attribute extraction")
+parser.add_argument("-t", "--threshold", default=3, type=float, help="threshold for attribute extraction")
 parser.add_argument("-b", "--batch_size", default=32, type=int, help="batch size")
 parser.add_argument("-c", "--chunk_size", default=50000, type=int, help="chunk size")
 parser.add_argument("-e", "--epochs", default=4, type=int, help="number of epochs to train attribute classifier")
@@ -35,20 +35,20 @@ if not os.path.exists("outputs"):
     os.makedirs("outputs")
 
 
-# tokenize data
-with open(data_src) as file:
-    lines = [line.rstrip() for line in file]
-attribute_df = pd.DataFrame(lines)[0]
-attribute_df.reset_index(drop=True)
+# # tokenize data
+# with open(data_src) as file:
+#     lines = [line.rstrip() for line in file]
+# attribute_df = pd.DataFrame(lines)[0]
+# attribute_df.reset_index(drop=True)
 
-corpus_tokenizer = GenderAttributeTokenizer.corpus_tokenizer(model_name, attribute_list1, attribute_list2, seq_len)
-train_dataset_1, val_dataset_1 = corpus_tokenizer.get_corpus_token_ids(attribute_df)
+# corpus_tokenizer = GenderAttributeTokenizer.corpus_tokenizer(model_name, attribute_list1, attribute_list2, seq_len)
+# train_dataset_1, val_dataset_1 = corpus_tokenizer.get_corpus_token_ids(attribute_df)
 
-torch.save(train_dataset_1, "outputs/1_train_dataset.pt")
-torch.save(val_dataset_1, "outputs/1_val_dataset.pt")
+# torch.save(train_dataset_1, "outputs/1_train_dataset.pt")
+# torch.save(val_dataset_1, "outputs/1_val_dataset.pt")
 
-# train_dataset_1 = torch.load("outputs/1_train_dataset.pt")
-# # val_dataset_1 = torch.load("outputs/1_val_dataset.pt")
+train_dataset_1 = torch.load("outputs/1_train_dataset.pt")
+val_dataset_1 = torch.load("outputs/1_val_dataset.pt")
 get_attribute_tokens = GenderAttributeTokenizer.get_attribute_tokens(model_name, attribute_list1, attribute_list2, train_dataset_1, val_dataset_1, seq_len)
 get_attribute_tokens.generate_tokens()
 

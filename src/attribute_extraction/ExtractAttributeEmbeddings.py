@@ -161,7 +161,7 @@ class ExtractAttributeEmbeddings:
                 # print(len(res), len(b_target_labels))
                 for key, iii in enumerate(embeddings):
                     all_embeddings.append(list(iii.cpu().detach().numpy()))
-                    # print(all_embeddings)
+                    # print(len(all_embeddings))
                     all_attribute_token_id.append(token_ids[key].cpu().detach().numpy().item())
                     # print(all_attribute_token_id)
                     all_gen_labels.append(gender[key])
@@ -171,7 +171,7 @@ class ExtractAttributeEmbeddings:
             # if jj<=20000:
                 if jj%self.chunk_size==0:
                     # ccc = {vv[k]:v for k,v in count_dict.items()}
-                    # print(ccc)
+                    # print("ccc")
                     with open(self.embeddings_path+"/embeddings_"+str(jj)+".pkl", 'wb') as f:
                         pickle.dump(all_embeddings, f)
                     with open(self.embeddings_path+"/token_ids_"+str(jj)+".pkl", 'wb') as f:

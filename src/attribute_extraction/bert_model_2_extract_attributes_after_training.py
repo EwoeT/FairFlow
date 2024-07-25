@@ -1420,12 +1420,14 @@ class BertForMaskedLM(BertPreTrainedModel):
             token_id = []
             gender = []
             logit_val = []
-            # print(logits)
+            # print("logits",logits)
             for i in ((logits < -self.threshold).nonzero()):
+                # print("aaa")
                 # print(logits[i])
                 ii = i.cpu().detach().numpy()
                 # print(i.cpu().detach().numpy())
                 if count_dict[input_ids[ii[0],ii[1]].item()]<self.max_token_count:
+                    # print("qqq")
                     res_emb.append(sequence_output[ii[0],ii[1]])
                     token_id.append(input_ids[ii[0],ii[1]])
                     gender.append(0)
@@ -1439,6 +1441,7 @@ class BertForMaskedLM(BertPreTrainedModel):
                 ii = i.cpu().detach().numpy()
                 # print(i.cpu().detach().numpy())
                 if count_dict[input_ids[ii[0],ii[1]].item()]<self.max_token_count:
+                    # print("rrr")
                     res_emb.append(sequence_output[ii[0],ii[1]])
                     token_id.append(input_ids[ii[0],ii[1]])
                     gender.append(1)
