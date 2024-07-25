@@ -20,7 +20,7 @@
 ```
 
 
-## 2. Extract attribute words relating to demograhic axis
+## 2. Generate counterfactual pairs
 - Args: <br/>
 -parser.add_argument("-m", "--model_name", default='bert-base-uncased', help="model type") <br/>
 -parser.add_argument("-x", "--attribute_list1", nargs="+", help="first attribute") <br/>
